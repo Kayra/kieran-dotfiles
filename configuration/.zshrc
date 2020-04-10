@@ -1,3 +1,6 @@
+# Neovim requires this
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Set up the prompt
 
 autoload -Uz promptinit

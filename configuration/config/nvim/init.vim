@@ -1,20 +1,10 @@
 scriptencoding utf-8
 
-if filereadable('/usr/local/bin/python3')
-  let g:python3_host_prog='/usr/local/bin/python3'
-endif
-if filereadable('/home/kieran/.nvm/versions/node/v13.6.0/bin/node')
-  let g:coc_node_path = "/home/kieran/.nvm/versions/node/v13.6.0/bin/node"
-endif
-
-let mapleader="\<Space>"
-let maplocalleader="\\"
-
-set clipboard=unnamedplus " see https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+" Plugins ----------------------------------------- 
 " auto-install vim-plug
 if has("autocmd")
   " Enable file type detection
-  filetype plugin on
+  filetype plugin indent on
 
   autocmd bufwritepost init.vim source $MYVIMRC
   " Syntax of these languages is fussy over tabs Vs spaces
@@ -28,7 +18,6 @@ if has("autocmd")
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-surround'
@@ -40,31 +29,24 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-repeat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-"Plug 'terryma/vim-multiple-cursors'
-" Plug 'flazz/vim-colorschemes'
-" Plug 'yuezk/vim-js'
-" Plug 'maxmellon/vim-jsx-pretty'
 Plug 'sheerun/vim-polyglot'
-" Plug 'w0rp/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Vim HardTime
 Plug 'takac/vim-hardtime'
 Plug 'majutsushi/tagbar'
-" https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
-Plug '~/.config/nvim/plugged/BufOnly'
+Plug '~/.config/nvim/plugged/BufOnly' " https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
+Plug '~/.config/nvim/plugged/LocalVim' " local config
 call plug#end()
-" autocmd VimEnter * colorscheme Tomorrow-Night-Eighties
+" Plugins ----------------------------------------- 
+
+" Mappings ---------------------------------------- 
 nmap <F1> :NERDTreeToggle<CR>
-" nmap <F2> :colorscheme random<CR>
+nmap <F2> :colorscheme random<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :source $MYVIMRC<CR>
 nmap <C-p> :GFiles<CR>
 nmap <C-f> :Files<CR>
-nmap <leader>v :tabedit $MYVIMRC<CR>
-
-command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="/home/kieran/git/scripts/.git" ls-files | xargs -I {} sh -c "echo /home/kieran/git/scripts/{};"', 'sink': 'e'}, <bang>0))
-"command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'find . \(-path "node_modules") -prune -o -type f -path "/home/kieran/git/scripts"', 'sink': 'e'}, <bang>0))
 nmap <C-g> :SearchProjectAndDotfiles<CR>
+nmap <leader>v :tabedit $MYVIMRC<CR>
 nmap s :bn<CR>
 nmap gb :Buffers<CR>
 inoremap jj <ESC>
@@ -72,154 +54,7 @@ inoremap jk <esc>
 inoremap kj <esc>
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
-let g:ale_fixers = {'javascript': ['prettier', 'eslint', 'tsserver']}
-let g:ale_fix_on_save = 1
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-let g:ale_completion_enabled = 1
-let g:ale_completion_tsserver_autoimport = 1
-let g:ale_sign_column_always = 1
-let g:airline#extensions#ale#enabled = 1
-let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+"]
-let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+"]
-let g:list_of_insert_keys = []
-let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-let g:hardtime_default_on = 1
-let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-
-
-" hide fzf status line
-autocmd! FileType fzf set laststatus=0 noshowmode noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-" Better display for messages
-set cmdheight=2
-
-" always show signcolumns
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-let g:coc_snippet_next = '<tab>'
-let g:coc_snippet_prev = '<s-tab>'
-let g:coc_global_extensions = ['coc-snippets', 'coc-tsserver', 'coc-eslint']
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <return> pumvisible() ? "\<C-y>" : "\<return>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-"autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Create mappings for function text object, requires document symbols feature of languageserver.
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-
-" Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
-
-" Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
-
-" Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-let g:airline#extensions#coc#enabled = 1
-let airline#extensions#coc#error_symbol = 'E:'
-let airline#extensions#coc#warning_symbol = 'W:'
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-let g:coc_snippet_next = '<TAB>'
-let g:coc_snippet_prev = '<S-TAB>'
-" Using CocList
-" Show all diagnostics
-" nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-" nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-" nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-" nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-" nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <TAB> :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <s-tab> :<C-u>CocPrev<CR>
-" Resume latest coc list
-" nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-" permanent very magic mode
+" permanent very magic mode (for vim regex)
 nnoremap / /\v
 vnoremap / /\v
 cnoremap %s/ %smagic/
@@ -227,41 +62,45 @@ cnoremap \>s/ \>smagic/
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
 
-" these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+" Testing mappings
 nmap <silent> t<C-n> :TestNearest<CR>
 nmap <silent> t<C-f> :w<CR>:TestFile<CR>
 nmap <silent> t<C-s> :TestSuite<CR>
 nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-g> :TestVisit<CR>
-
-let g:projectionist_heuristics = { '*': {} }
-" Helper function for batch-updating the g:projectionist_heuristics variable.
-function! s:project(...)
-  for [l:pattern, l:projection] in a:000
-    let g:projectionist_heuristics['*'][l:pattern] = l:projection
-  endfor
-endfunction
-
-" Set up projections for JS variants.
-for s:extension in ['.js', '.jsx', '.ts', '.tsx']
-  call s:project(
-        \ ['src/*' . s:extension, {
-        \   'alternate': [
-        \     '__tests__/{}.test' . s:extension,
-        \     '__tests__/{dirname}.test' . s:extension
-        \   ],
-        \   'type': 'source'
-        \ }],
-        \ ['__tests__/*.test' . s:extension, {
-        \   'alternate': [ 
-        \     'src/{}' . s:extension,
-        \     'src/{}/{basename}' . s:extension
-        \  ],
-        \   'type': 'test'
-        \ }])
-endfor
+" Mappings ---------------------------------------- 
 
 
+" Vim hardtime
+let g:hardtime_default_on = 1
+
+" FZF
+" hide fzf status line
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="$HOME/git/scripts/.git" ls-files | xargs -I {} sh -c "echo $HOME/git/scripts/{};"', 'sink': 'e'}, <bang>0))
+
+
+" Airline
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+let g:airline#extensions#coc#enabled = 1
+let airline#extensions#coc#error_symbol = 'E:'
+let airline#extensions#coc#warning_symbol = 'W:'
+let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+
+
+" Settings
+let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+"]
+let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+"]
+let g:list_of_insert_keys = []
+let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+let mapleader="\<Space>"
+let maplocalleader="\\"
+set clipboard=unnamedplus " see https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
+set cmdheight=2 " Better display for messages
+set signcolumn=yes " always show signcolumns
 set autoindent                        " maintain indent of current line
 set backspace=indent,start,eol        " allow unrestricted backspacing in insert mode
 
@@ -331,7 +170,7 @@ endif
 set list                              " show whitespace
 set listchars=nbsp:⦸                  " CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
 set listchars+=tab:▷┅                 " WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
-                                      " + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
+" + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
 set listchars+=extends:»              " RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
 set listchars+=precedes:«             " LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
 set listchars+=trail:•                " BULLET (U+2022, UTF-8: E2 80 A2)
@@ -398,13 +237,13 @@ endif
 set tabstop=2                         " spaces per tab
 
 
-  if exists('$SUDO_USER')
-    set noundofile                    " don't create root-owned files
-  else
-    set undodir=~/.vim/tmp/undo       " keep undo files out of the way
-    set undodir+=.
-    set undofile                      " actually use undo files
-  endif
+if exists('$SUDO_USER')
+  set noundofile                    " don't create root-owned files
+else
+  set undodir=~/.vim/tmp/undo       " keep undo files out of the way
+  set undodir+=.
+  set undofile                      " actually use undo files
+endif
 
 set updatecount=80                    " update swapfiles every 80 typed chars
 set updatetime=2000                   " CursorHold interval
@@ -465,3 +304,57 @@ if has('wildmenu')
 endif
 set wildmode=longest:full,full        " shell-like autocomplete to unambiguous portion
 
+" Projectionist settings
+let g:projectionist_heuristics = { '*': {} }
+" Helper function for batch-updating the g:projectionist_heuristics variable.
+function! s:project(...)
+  for [l:pattern, l:projection] in a:000
+    let g:projectionist_heuristics['*'][l:pattern] = l:projection
+  endfor
+endfunction
+
+" Set up projections for JS variants.
+for s:extension in ['.js', '.jsx', '.ts', '.tsx']
+  call s:project(
+        \ ['src/*' . s:extension, {
+        \   'alternate': [
+        \     '__tests__/{}.test' . s:extension,
+        \     '__tests__/{dirname}.test' . s:extension
+        \   ],
+        \   'type': 'source'
+        \ }],
+        \ ['__tests__/*.test' . s:extension, {
+        \   'alternate': [ 
+        \     'src/{}' . s:extension,
+        \     'src/{}/{basename}' . s:extension
+        \  ],
+        \   'type': 'test'
+        \ }])
+endfor
+
+let g:projectionist_heuristics = { '*': {} }
+" Helper function for batch-updating the g:projectionist_heuristics variable.
+function! s:project(...)
+  for [l:pattern, l:projection] in a:000
+    let g:projectionist_heuristics['*'][l:pattern] = l:projection
+  endfor
+endfunction
+
+" Set up projections for JS variants.
+for s:extension in ['.js', '.jsx', '.ts', '.tsx']
+  call s:project(
+        \ ['src/*' . s:extension, {
+        \   'alternate': [
+        \     '__tests__/{}.test' . s:extension,
+        \     '__tests__/{dirname}.test' . s:extension
+        \   ],
+        \   'type': 'source'
+        \ }],
+        \ ['__tests__/*.test' . s:extension, {
+        \   'alternate': [ 
+        \     'src/{}' . s:extension,
+        \     'src/{}/{basename}' . s:extension
+        \  ],
+        \   'type': 'test'
+        \ }])
+endfor
