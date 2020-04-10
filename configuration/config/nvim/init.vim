@@ -12,28 +12,36 @@ let maplocalleader="\\"
 
 set clipboard=unnamedplus " see https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 " auto-install vim-plug
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-	silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall
+if has("autocmd")
+  " Enable file type detection
+  filetype plugin on
+
+  autocmd bufwritepost init.vim source $MYVIMRC
+  " Syntax of these languages is fussy over tabs Vs spaces
+  autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+  if empty(glob('~/.config/nvim/autoload/plug.vim'))
+    silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall
+  endif
 endif
+
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-surround'
 Plug 'janko/vim-test'
-Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-repeat'
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "Plug 'terryma/vim-multiple-cursors'
-Plug 'flazz/vim-colorschemes'
+" Plug 'flazz/vim-colorschemes'
 " Plug 'yuezk/vim-js'
 " Plug 'maxmellon/vim-jsx-pretty'
 Plug 'sheerun/vim-polyglot'
@@ -42,18 +50,27 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Vim HardTime
 Plug 'takac/vim-hardtime'
 Plug 'majutsushi/tagbar'
+" https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
+Plug '~/.config/nvim/plugged/BufOnly'
 call plug#end()
 " autocmd VimEnter * colorscheme Tomorrow-Night-Eighties
 nmap <F1> :NERDTreeToggle<CR>
-nmap <F2> :colorscheme random<CR>
+" nmap <F2> :colorscheme random<CR>
 nmap <F3> :TagbarToggle<CR>
+nmap <F4> :source $MYVIMRC<CR>
 nmap <C-p> :GFiles<CR>
 nmap <C-f> :Files<CR>
+nmap <leader>v :tabedit $MYVIMRC<CR>
+
+command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="/home/kieran/git/scripts/.git" ls-files | xargs -I {} sh -c "echo /home/kieran/git/scripts/{};"', 'sink': 'e'}, <bang>0))
+"command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'find . \(-path "node_modules") -prune -o -type f -path "/home/kieran/git/scripts"', 'sink': 'e'}, <bang>0))
+nmap <C-g> :SearchProjectAndDotfiles<CR>
 nmap s :bn<CR>
 nmap gb :Buffers<CR>
 inoremap jj <ESC>
 inoremap jk <esc>
 inoremap kj <esc>
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
 let g:ale_fixers = {'javascript': ['prettier', 'eslint', 'tsserver']}
 let g:ale_fix_on_save = 1
@@ -68,18 +85,22 @@ let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+"]
 let g:list_of_insert_keys = []
 let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
 let g:hardtime_default_on = 1
-
 let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-filetype plugin on
+
+
+" hide fzf status line
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 " Better display for messages
 set cmdheight=2
 
 " always show signcolumns
 set signcolumn=yes
-" disable ~/.config/nvim/plugged/ultisnips/autoload/UltiSnips/map_keys.vim line 61
+
 " Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -90,6 +111,10 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
+let g:coc_global_extensions = ['coc-snippets', 'coc-tsserver', 'coc-eslint']
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -155,8 +180,8 @@ omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
 " Use <TAB> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-"nmap <silent> <TAB> <Plug>(coc-range-select)
-" xmap <silent> <TAB> <Plug>(coc-range-select)
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -174,9 +199,6 @@ let airline#extensions#coc#error_symbol = 'E:'
 let airline#extensions#coc#warning_symbol = 'W:'
 let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-let g:UltiSnipsExpandTrigger='<Nop>'
-let g:UltiSnipsJumpForwardTrigger = '<TAB>'
-let g:UltiSnipsJumpBackwardTrigger = '<S-TAB>'
 let g:coc_snippet_next = '<TAB>'
 let g:coc_snippet_prev = '<S-TAB>'
 " Using CocList
@@ -191,9 +213,9 @@ let g:coc_snippet_prev = '<S-TAB>'
 " Search workspace symbols
 " nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-" nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <TAB> :<C-u>CocNext<CR>
 " Do default action for previous item.
-" nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <s-tab> :<C-u>CocPrev<CR>
 " Resume latest coc list
 " nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
@@ -207,7 +229,7 @@ nnoremap :g// :g//
 
 " these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
 nmap <silent> t<C-n> :TestNearest<CR>
-nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-f> :w<CR>:TestFile<CR>
 nmap <silent> t<C-s> :TestSuite<CR>
 nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-g> :TestVisit<CR>
@@ -246,9 +268,12 @@ set backspace=indent,start,eol        " allow unrestricted backspacing in insert
 if exists('$SUDO_USER')
   set nobackup                        " don't create root-owned files
   set nowritebackup                   " don't create root-owned files
+  set noswapfile                      " don't create root-owned files
 else
   set backupdir=~/.vim/tmp/backup     " keep backup files out of the way
   set backupdir+=.
+  set directory=~/.vim/tmp/swap//     " keep swap files out of the way
+  set directory+=.
 endif
 
 if exists('&belloff')
@@ -256,13 +281,6 @@ if exists('&belloff')
 endif
 
 set diffopt+=foldcolumn:0             " don't show fold column in diff view
-
-if exists('$SUDO_USER')
-  set noswapfile                      " don't create root-owned files
-else
-  set directory=~/.vim/tmp/swap//     " keep swap files out of the way
-  set directory+=.
-endif
 
 set noemoji                           " don't assume all emoji are double width
 set expandtab                         " always use spaces instead of tabs
@@ -279,7 +297,7 @@ if has('folding')
   endif
 
   set foldmethod=indent               " not as cool as syntax, but faster
-  set foldlevelstart=3               " start unfolded
+  set foldlevelstart=3               " start folded
   hi Folded ctermfg=Black
   hi Folded ctermbg=None
 endif
@@ -293,7 +311,6 @@ set guioptions-=T                     " don't show toolbar
 set hidden                            " allows you to hide buffers with unsaved changes without being prompted
 
 if !has('nvim')
-  " Sync with corresponding nvim :highlight commands in ~/.vim/plugin/autocmds.vim:
   set highlight+=@:Conceal            " ~/@ at end of window, 'showbreak'
   set highlight+=D:Conceal            " override DiffDelete
   set highlight+=N:FoldColumn         " make current line number stand out a little
@@ -352,7 +369,6 @@ endif
 
 set sidescroll=0                      " sidescroll in jumps because terminals are slow
 set sidescrolloff=3                   " same as scrolloff, but for columns
-set smarttab                          " <tab>/<BS> indent/dedent in leading whitespace
 
 if v:progname !=# 'vi'
   set softtabstop=-1                  " use 'shiftwidth' for tab/bs at end of line
@@ -382,7 +398,6 @@ endif
 set tabstop=2                         " spaces per tab
 
 
-if has('persistent_undo')
   if exists('$SUDO_USER')
     set noundofile                    " don't create root-owned files
   else
@@ -390,7 +405,6 @@ if has('persistent_undo')
     set undodir+=.
     set undofile                      " actually use undo files
   endif
-endif
 
 set updatecount=80                    " update swapfiles every 80 typed chars
 set updatetime=2000                   " CursorHold interval
