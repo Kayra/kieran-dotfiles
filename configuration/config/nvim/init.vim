@@ -1,12 +1,15 @@
 scriptencoding utf-8
 
+let $NVIM_COC_LOG_LEVEL = 'debug'
+
 " Plugins ----------------------------------------- 
 " auto-install vim-plug
 if has("autocmd")
   " Enable file type detection
   filetype plugin indent on
 
-  autocmd bufwritepost init.vim source $MYVIMRC
+  " autocmd bufwritepost init.vim source $MYVIMRC " for some reason really
+  " laggy
   " Syntax of these languages is fussy over tabs Vs spaces
   autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
@@ -47,7 +50,8 @@ nmap <C-p> :GFiles<CR>
 nmap <C-f> :Files<CR>
 nmap <C-g> :SearchProjectAndDotfiles<CR>
 nmap <leader>v :tabedit $MYVIMRC<CR>
-nmap s :bn<CR>
+nmap <leader>t :BufOnly<CR>:A<CR>
+nmap <leader>s :bn<CR>
 nmap gb :Buffers<CR>
 inoremap jj <ESC>
 inoremap jk <esc>
@@ -72,7 +76,7 @@ nmap <silent> t<C-g> :TestVisit<CR>
 
 
 " Vim hardtime
-let g:hardtime_default_on = 1
+let g:hardtime_default_on = 0
 
 " FZF
 " hide fzf status line
@@ -97,7 +101,6 @@ let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+"]
 let g:list_of_insert_keys = []
 let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
 let mapleader="\<Space>"
-let maplocalleader="\\"
 set clipboard=unnamedplus " see https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 set cmdheight=2 " Better display for messages
 set signcolumn=yes " always show signcolumns
@@ -109,9 +112,9 @@ if exists('$SUDO_USER')
   set nowritebackup                   " don't create root-owned files
   set noswapfile                      " don't create root-owned files
 else
-  set backupdir=~/.vim/tmp/backup     " keep backup files out of the way
+  set backupdir=~/.nvim/tmp/backup     " keep backup files out of the way
   set backupdir+=.
-  set directory=~/.vim/tmp/swap//     " keep swap files out of the way
+  set directory=~/.nvim/tmp/swap//     " keep swap files out of the way
   set directory+=.
 endif
 
@@ -240,7 +243,7 @@ set tabstop=2                         " spaces per tab
 if exists('$SUDO_USER')
   set noundofile                    " don't create root-owned files
 else
-  set undodir=~/.vim/tmp/undo       " keep undo files out of the way
+  set undodir=~/.nvim/tmp/undo       " keep undo files out of the way
   set undodir+=.
   set undofile                      " actually use undo files
 endif
@@ -273,20 +276,20 @@ if exists('s:viminfo')
     " - '0 store marks for 0 files
     " - <0 don't save registers
     " - f0 don't store file marks
-    " - n: store in ~/.vim/tmp
+    " - n: store in ~/.nvim/tmp
     "
-    execute 'set ' . s:viminfo . "='0,<0,f0,n~/.vim/tmp/" . s:viminfo
+    execute 'set ' . s:viminfo . "='0,<0,f0,n~/.nvim/tmp/" . s:viminfo
 
-    if !empty(glob('~/.vim/tmp/' . s:viminfo))
-      if !filereadable(expand('~/.vim/tmp/' . s:viminfo))
-        echoerr 'warning: ~/.vim/tmp/' . s:viminfo . ' exists but is not readable'
+    if !empty(glob('~/.nvim/tmp/' . s:viminfo))
+      if !filereadable(expand('~/.nvim/tmp/' . s:viminfo))
+        echoerr 'warning: ~/.nvim/tmp/' . s:viminfo . ' exists but is not readable'
       endif
     endif
   endif
 endif
 
 if has('mksession')
-  set viewdir=~/.vim/tmp/view         " override ~/.vim/view default
+  set viewdir=~/.nvim/tmp/view         " override ~/.nvim/view default
   set viewoptions=cursor,folds        " save/restore just these (with `:{mk,load}view`)
 endif
 

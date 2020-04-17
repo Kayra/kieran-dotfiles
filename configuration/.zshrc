@@ -1,3 +1,6 @@
+export NVM_DIR="~/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
 # Neovim requires this
 export XDG_CONFIG_HOME="$HOME/.config"
 
@@ -73,6 +76,11 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}
 
 # Colorize completions using default `ls` colors.
 zstyle ':completion:*' list-colors ''
+
+# vim alias
+alias vim="nvim"
+alias vi="nvim"
+alias oldvim="vim"
 
 #
 # Correction
@@ -263,3 +271,9 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 export PATH="$PATH:/$HOME/go/bin:/usr/local/go/bin"
+
+function tfs() {
+  tmuxinator s financial-satellite
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
