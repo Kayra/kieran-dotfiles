@@ -21,6 +21,7 @@ if has("autocmd")
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-surround'
@@ -74,6 +75,8 @@ nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-g> :TestVisit<CR>
 " Mappings ---------------------------------------- 
 
+" vim wiki
+set nocompatible
 
 " Vim hardtime
 let g:hardtime_default_on = 0

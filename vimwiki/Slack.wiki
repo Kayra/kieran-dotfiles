@@ -1,0 +1,7 @@
+
+= Slack =
+
+== Navigation ==
+
+* Cmd+/ - View shortcuts
+* Cmd+k - Quick switcher
