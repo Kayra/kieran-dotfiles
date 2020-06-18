@@ -21,6 +21,7 @@ if has("autocmd")
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+Plug 'unblevable/quick-scope'
 Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
@@ -41,6 +42,7 @@ Plug '~/.config/nvim/plugged/BufOnly' " https://github.com/vim-scripts/BufOnly.v
 Plug '~/.config/nvim/plugged/LocalVim' " local config
 call plug#end()
 " Plugins ----------------------------------------- 
+let g:gitgutter_preview_win_floating = 0
 
 " Mappings ---------------------------------------- 
 nmap <F1> :NERDTreeToggle<CR>
@@ -52,7 +54,7 @@ nmap <C-f> :Files<CR>
 nmap <C-g> :SearchProjectAndDotfiles<CR>
 nmap <leader>v :tabedit $MYVIMRC<CR>
 nmap <leader>t :BufOnly<CR>:A<CR>
-nmap <leader>s :bn<CR>
+nmap <leader><Space> :bn<CR>
 nmap gb :Buffers<CR>
 inoremap jj <ESC>
 inoremap jk <esc>

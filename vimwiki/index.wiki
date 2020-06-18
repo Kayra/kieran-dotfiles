@@ -2,4 +2,3 @@
 = My vim wiki =
 * [[Cheatsheets]]
 
-Testing
