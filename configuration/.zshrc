@@ -82,6 +82,9 @@ alias vim="nvim"
 alias vi="nvim"
 alias oldvim="vim"
 
+# git alias
+alias gl="git log --pretty=oneline"
+
 #
 # Correction
 #
