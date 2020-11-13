@@ -1,0 +1,2 @@
+[[snippets/work/ProfileMdmPut]]
+[[snippets/work/ProfileAppleApplicationResource]]

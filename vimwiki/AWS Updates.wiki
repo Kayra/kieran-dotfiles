@@ -1,0 +1,66 @@
+
+* AWS Honeycomb - build apps without code
+* Lambda with Elastic File System
+* AWS Ampify in IOS and Android
+* Amazon Chime (2017) - Slack will use the Chime SDK
+* AWS CodeArtifact
+* AWS Lumberyard (made game Crucible)
+
+
+EC2 limited to 20 per region
+In VPC , first 4 and last 1 are reserved by AWS
+EC2 uses Nitro and Xen hypervisors
+EC2 metrics - CPUUtilization, DiskReadOps, DiskWriteOps, DiskReadBytes, DiskWriteBytes, NetworkIn, NetworkOut, NetworkPacketsIn, NetworkPacketsOut, MetadataNoToken (No memory options)
+
+Autoscaling scaling in termination - it applies the default or customized termination policy. 
+Default policy:
+1. Determine which Availability Zones have the most instances,
+2. Determine which instances to terminate so as to align the remaining instances to the allocation strategy
+3. Determine whether any of the instances use the oldest launch template or configuration
+
+DynamoDB API Post headers
+X-Amz-Date: <Date> 
+X-Amz-Target: DynamoDB_20120810.GetItem
+Host: dynamodb.<region>.<domain>;
+content-type
+
+Amazon Athena doesnt support XML - Amazon Athena supports a wide variety of data formats like CSV, TSV, JSON, or Textfiles and also supports open source columnar formats such as Apache ORC and Apache Parquet
+
+General Guidance - < 24 hours
+System Impaired - < 12 hours
+Production System Impaired - < 4 hours
+Production System Down - < 1 hour
+Business Critical System Down - <15 min
+
+Maximum VisibilityTimeout for SQS is 12 hours
+
+Support levels Basic, Developer, Business, Enterprise
+
+VPC peering does not support edge to edge routing. https://docs.aws.amazon.com/vpc/latest/peering/invalid-peering-configurations.html (if VPC A has internet gateway or direction connection, VPC B cant access)
+
+Cheapest EBS = Cold & Throutput optimized (HDD based)
+
+A placement group can only have 7 running instances per Availability Zone
+
+Owner = Identity that create the AWS account
+
+Security groups are stateful, ACL are stateless
+
+Alias Records are specific to AWS
+
+AWS does not copy launch permissions, user-defined tags, or Amazon S3 bucket permissions from the source AMI to the new AMI.
+
+Reduced redundancy s3 is the only one that doesnt have 99.999999999% durability
+
+VTL = Virtual Tape Backup
+
+When you launch a new EC2 instance, the EC2 service attempts to place the instance in such a way that all of your instances are spread out across underlying hardware to minimize correlated failures. You can use placement groups to influence the placement of a group of interdependent instances to meet the needs of your workload. 
+* Cluster – packs instances close together inside an Availability Zone. This strategy enables workloads to achieve the low-latency network performance necessary for tightly-coupled node-to-node communication that is typical of HPC applications.
+* Partition – spreads your instances across logical partitions such that groups of instances in one partition do not share the underlying hardware with groups of instances in different partitions. This strategy is typically used by large distributed and replicated workloads, such as Hadoop, Cassandra, and Kafka.
+* Spread – strictly places a small group of instances across distinct underlying hardware to reduce correlated failures.
+
+An elastic network interface is a logical networking component in a VPC that represents a virtual network card. It can include the following attributes:
+
+
+Questions
+Benefits of sharding vs replicas?

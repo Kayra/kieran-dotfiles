@@ -1,5 +1,8 @@
 export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export POETRY_HTTP_BASIC_BIZMOBILE_USERNAME=elasticpypi
+export POETRY_HTTP_BASIC_BIZMOBILE_PASSWORD=5d33f9a861edd7d97342087e21ea369c77ef4dfb7c8852140ac8859a34f6f70d
+PATH=$PATH:~/Library/Python/3.8/bin:~/.poetry/bin
 
 # Neovim requires this
 export XDG_CONFIG_HOME="$HOME/.config"

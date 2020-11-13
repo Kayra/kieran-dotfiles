@@ -1,5 +1,7 @@
 scriptencoding utf-8
 
+highlight Folded guibg=grey guifg=purple
+
 let $NVIM_COC_LOG_LEVEL = 'debug'
 
 " Plugins ----------------------------------------- 
