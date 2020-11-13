@@ -19,3 +19,13 @@ function wsnip
   nvim ~/git/scripts/vimwiki/snippets/work/$argv.wiki
   echo "[[snippets/work/$argv]]" >> ~/git/scripts/vimwiki/WorkSnippets.wiki
 end
+
+alias gl="git log --pretty=oneline"
+
+function cd
+    if count $argv > /dev/null
+        builtin cd "$argv"; and ls -a
+    else
+        builtin cd ~; and ls -a
+    end
+end
