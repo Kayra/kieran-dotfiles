@@ -3,6 +3,7 @@ scriptencoding utf-8
 highlight Folded guibg=grey guifg=purple
 
 let $NVIM_COC_LOG_LEVEL = 'debug'
+let mapleader="\<Space>"
 
 " Plugins ----------------------------------------- 
 " auto-install vim-plug
@@ -22,6 +23,7 @@ if has("autocmd")
   endif
 endif
 
+" Plugins ----------------------------------------- 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'unblevable/quick-scope'
 Plug 'vimwiki/vimwiki'
@@ -29,7 +31,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-surround'
 Plug 'janko/vim-test'
-Plug 'airblade/vim-gitgutter'
+Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
@@ -43,8 +45,6 @@ Plug 'majutsushi/tagbar'
 Plug '~/.config/nvim/plugged/BufOnly' " https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
 Plug '~/.config/nvim/plugged/LocalVim' " local config
 call plug#end()
-" Plugins ----------------------------------------- 
-let g:gitgutter_preview_win_floating = 0
 
 " Mappings ---------------------------------------- 
 nmap <F1> :NERDTreeToggle<CR>
@@ -55,13 +55,16 @@ nmap <C-p> :GFiles<CR>
 nmap <C-f> :Files<CR>
 nmap <C-g> :SearchProjectAndDotfiles<CR>
 nmap <leader>v :tabedit $MYVIMRC<CR>
-nmap <leader>t :BufOnly<CR>:A<CR>
+nmap <leader>b :BufOnly<CR>:A<CR>
 nmap <leader><Space> :bn<CR>
 nmap gb :Buffers<CR>
 inoremap jj <ESC>
 inoremap jk <esc>
 inoremap kj <esc>
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+
+" TODO finding
+noremap <leader>t :noautocmd vimgrep /TODO/j ./src**/*<CR>:cw<CR>
 
 " permanent very magic mode (for vim regex)
 nnoremap / /\v
@@ -70,6 +73,9 @@ cnoremap %s/ %smagic/
 cnoremap \>s/ \>smagic/
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
+
+" jump list
+nnoremap <C-L> <C-I>
 
 " Testing mappings
 nmap <silent> t<C-n> :TestNearest<CR>
@@ -81,6 +87,8 @@ nmap <silent> t<C-g> :TestVisit<CR>
 
 " vim wiki
 set nocompatible
+
+set background=light
 
 " Vim hardtime
 let g:hardtime_default_on = 0
@@ -107,10 +115,9 @@ let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+"]
 let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+"]
 let g:list_of_insert_keys = []
 let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-let mapleader="\<Space>"
 set clipboard=unnamedplus " see https://vi.stackexchange.com/questions/84/how-can-i-copy-text-to-the-system-clipboard-from-vim
 set cmdheight=2 " Better display for messages
-set signcolumn=yes " always show signcolumns
+set signcolumn=no " always show signcolumns
 set autoindent                        " maintain indent of current line
 set backspace=indent,start,eol        " allow unrestricted backspacing in insert mode
 
@@ -146,8 +153,8 @@ if has('folding')
   endif
 
   set foldmethod=indent               " not as cool as syntax, but faster
-  set foldlevelstart=3               " start folded
-  hi Folded ctermfg=Black
+  set foldlevelstart=5               " start folded
+  hi Folded ctermfg=blue
   hi Folded ctermbg=None
 endif
 
@@ -341,30 +348,9 @@ for s:extension in ['.js', '.jsx', '.ts', '.tsx']
         \   'type': 'test'
         \ }])
 endfor
+call s:project(
+        \ ['*.h', { 'alternate': ['{}.cpp'], 'type': 'source' }],
+        \ ['*.cpp', { 'alternate': ['{}.h'], 'type': 'source' }]
+        \ )
 
-let g:projectionist_heuristics = { '*': {} }
-" Helper function for batch-updating the g:projectionist_heuristics variable.
-function! s:project(...)
-  for [l:pattern, l:projection] in a:000
-    let g:projectionist_heuristics['*'][l:pattern] = l:projection
-  endfor
-endfunction
 
-" Set up projections for JS variants.
-for s:extension in ['.js', '.jsx', '.ts', '.tsx']
-  call s:project(
-        \ ['src/*' . s:extension, {
-        \   'alternate': [
-        \     '__tests__/{}.test' . s:extension,
-        \     '__tests__/{dirname}.test' . s:extension
-        \   ],
-        \   'type': 'source'
-        \ }],
-        \ ['__tests__/*.test' . s:extension, {
-        \   'alternate': [ 
-        \     'src/{}' . s:extension,
-        \     'src/{}/{basename}' . s:extension
-        \  ],
-        \   'type': 'test'
-        \ }])
-endfor

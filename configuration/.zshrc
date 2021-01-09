@@ -1,8 +1,6 @@
-export NVM_DIR="~/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-export POETRY_HTTP_BASIC_BIZMOBILE_USERNAME=elasticpypi
-export POETRY_HTTP_BASIC_BIZMOBILE_PASSWORD=5d33f9a861edd7d97342087e21ea369c77ef4dfb7c8852140ac8859a34f6f70d
-PATH=$PATH:~/Library/Python/3.8/bin:~/.poetry/bin
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion<Paste>
 
 # Neovim requires this
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -87,6 +85,8 @@ alias oldvim="vim"
 
 # git alias
 alias gl="git log --pretty=oneline"
+alias his="history 1000 | grep"
+alias barrier="flatpak run com.github.debauchee.barrier"
 
 #
 # Correction
@@ -283,3 +283,7 @@ function tfs() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true

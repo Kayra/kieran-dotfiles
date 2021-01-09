@@ -1,10 +1,15 @@
+# Neovim requires this
+export XDG_CONFIG_HOME="$HOME/.config"
 
-if status is-interactive
-and not set -q TMUX
-    exec tmux
+# parallel make
+set -x NUMCPUS grep -c '^processor' /proc/cpuinfo
+
+function pmake
+ set -l numcpu ($NUMCPUS)
+ time nice make -j$numcpu --load-average=$numcpu $argv
 end
 
-bind -M insert \r accept-autosuggestion execute
+# bind -M insert \r accept-autosuggestion execute
 
 function settitle
     printf "\033k$1\033\\"
@@ -29,3 +34,9 @@ function cd
         builtin cd ~; and ls -a
     end
 end
+
+export EDITOR="nvim"
+export TERM="screen-256color"
+
+# set PATH so it includes user's private bin if it exists
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
