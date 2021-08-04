@@ -1,6 +1,0 @@
-
-= Cheatsheets =
- * [[Qutebrowser]]
- * [[Vim]]
- * [[Tmux]]
- * [[Slack]]

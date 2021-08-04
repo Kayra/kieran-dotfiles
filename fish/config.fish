@@ -40,3 +40,7 @@ export TERM="screen-256color"
 
 # set PATH so it includes user's private bin if it exists
 export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/__tabtab.fish ]; and . ~/.config/tabtab/__tabtab.fish; or true

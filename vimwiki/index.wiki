@@ -1,7 +1,0 @@
-
-= My vim wiki =
-* [[Cheatsheets]]
-* [[AWS Updates]]
-* [[Notes]]
-* [[Snippets]]
-* [[WorkSnippets]]

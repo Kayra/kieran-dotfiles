@@ -1,5 +1,17 @@
 scriptencoding utf-8
 
+" Nice menu when typing `:find *.py`
+set wildmode=longest,list,full
+set wildmenu
+" Ignore files
+set wildignore+=*.pyc
+set wildignore+=*_build/*
+set wildignore+=**/coverage/*
+set wildignore+=**/node_modules/*
+set wildignore+=**/android/*
+set wildignore+=**/ios/*
+set wildignore+=**/.git/*
+
 highlight Folded guibg=grey guifg=purple
 
 let $NVIM_COC_LOG_LEVEL = 'debug'
@@ -312,14 +324,6 @@ if has('virtualedit')
 endif
 set visualbell t_vb=                  " stop annoying beeping for non-error errors
 set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
-set wildcharm=<C-z>                   " substitute for 'wildchar' (<Tab>) in macros
-if has('wildignore')
-  set wildignore+=*.o,*.rej           " patterns to ignore during file-navigation
-endif
-if has('wildmenu')
-  set wildmenu                        " show options as list when switching buffers etc
-endif
-set wildmode=longest:full,full        " shell-like autocomplete to unambiguous portion
 
 " Projectionist settings
 let g:projectionist_heuristics = { '*': {} }
