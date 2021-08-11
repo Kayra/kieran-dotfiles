@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-sudo apt-get update
-sudo apt-get install -y zsh curl stow nodejs silversearcher-ag
+brew install zsh curl stow nodejs
 
 export DOTFILES=~/.dotfiles
 git clone https://github.com/Accumulative/dotfiles $DOTFILES
@@ -17,10 +16,3 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 mkdir -p ~/.nvim/tmp/swap
 mkdir -p ~/.nvim/tmp/undo
 mkdir -p ~/.nvim/tmp/backup
-
-sudo add-apt-repository ppa:mmstick76/alacritty
-sudo apt install alacritty
-npm install -g alacritty-themes
-git clone https://github.com/alacritty/alacritty.git
-sudo tic -xe alacritty,alacritty-direct alacritty/extra/alacritty.info
-rm -rf alacritty
