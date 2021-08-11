@@ -364,7 +364,7 @@ call s:project(
         \ ['*.cpp', { 'alternate': ['{}.h'], 'type': 'source' }]
         \ )
 
-luafile ~/.config/nvim/lua/plugins/test.lua
+luafile ~/.config/nvim/lua/plugins/complete.lua
 
 " LSP config (the mappings used in the default file don't quite work right)
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
