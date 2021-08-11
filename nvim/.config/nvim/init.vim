@@ -37,24 +37,40 @@ endif
 
 " Plugins ----------------------------------------- 
 call plug#begin('~/.config/nvim/plugged')
-Plug 'unblevable/quick-scope'
-Plug 'vimwiki/vimwiki'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-surround'
-Plug 'janko/vim-test'
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'vim-airline/vim-airline'
-Plug 'scrooloose/nerdcommenter'
+Plug 'ambv/black'
+Plug 'glepnir/lspsaga.nvim'
 Plug 'godlygeek/tabular'
-Plug 'tpope/vim-repeat'
+Plug 'hrsh7th/nvim-compe'
+Plug 'janko/vim-test'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'takac/vim-hardtime'
+Plug 'junegunn/gv.vim'
 Plug 'majutsushi/tagbar'
-Plug 'dbeniamine/cheat.sh-vim'
+Plug 'mbbill/undotree'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'puremourning/vimspector'
+Plug 'sbdchd/neoformat'
+Plug 'scrooloose/nerdcommenter'
+Plug 'sheerun/vim-polyglot'
+Plug 'simrat39/symbols-outline.nvim'
+Plug 'szw/vim-maximizer'
+Plug 'takac/vim-hardtime'
+Plug 'theprimeagen/vim-be-good'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'unblevable/quick-scope'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-utils/vim-man'
+Plug 'vimwiki/vimwiki'
 Plug '~/.config/nvim/plugged/BufOnly' " https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
 Plug '~/.config/nvim/plugged/LocalVim' " local config
 call plug#end()
@@ -110,17 +126,7 @@ let g:hardtime_default_on = 0
 " hide fzf status line
 autocmd! FileType fzf set laststatus=0 noshowmode noruler
       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="$HOME/.dotfiles/.git" ls-files | xargs -I {} sh -c "echo $HOME/.dotfiles/{};"', 'sink': 'e'}, <bang>0))
-
-
-" Airline
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-let g:airline#extensions#coc#enabled = 1
-let airline#extensions#coc#error_symbol = 'E:'
-let airline#extensions#coc#warning_symbol = 'W:'
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="$HOME/git/scripts/.git" ls-files | xargs -I {} sh -c "echo $HOME/git/scripts/{};"', 'sink': 'e'}, <bang>0))
 
 
 " Settings
@@ -357,5 +363,21 @@ call s:project(
         \ ['*.h', { 'alternate': ['{}.cpp'], 'type': 'source' }],
         \ ['*.cpp', { 'alternate': ['{}.h'], 'type': 'source' }]
         \ )
+
+luafile ~/.config/nvim/lua/plugins/test.lua
+
+" LSP config (the mappings used in the default file don't quite work right)
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+"nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+"nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+" auto-format
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
 
 
