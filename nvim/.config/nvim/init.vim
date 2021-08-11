@@ -54,6 +54,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'takac/vim-hardtime'
 Plug 'majutsushi/tagbar'
+Plug 'dbeniamine/cheat.sh-vim'
 Plug '~/.config/nvim/plugged/BufOnly' " https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
 Plug '~/.config/nvim/plugged/LocalVim' " local config
 call plug#end()
@@ -109,7 +110,7 @@ let g:hardtime_default_on = 0
 " hide fzf status line
 autocmd! FileType fzf set laststatus=0 noshowmode noruler
       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="$HOME/git/scripts/.git" ls-files | xargs -I {} sh -c "echo $HOME/git/scripts/{};"', 'sink': 'e'}, <bang>0))
+command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="$HOME/.dotfiles/.git" ls-files | xargs -I {} sh -c "echo $HOME/.dotfiles/{};"', 'sink': 'e'}, <bang>0))
 
 
 " Airline

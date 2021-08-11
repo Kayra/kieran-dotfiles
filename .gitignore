@@ -1,4 +1,5 @@
-configuration/config/nvim/plugged/LocalVim
 *.swp
 *.un~
 vimwiki/snippets/work
+nvim/.config/nvim
+
