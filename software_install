@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-brew install zsh curl stow nodejs
+brew install zsh curl stow nodejs ag
 
 export DOTFILES=~/.dotfiles
 git clone https://github.com/Accumulative/dotfiles $DOTFILES
