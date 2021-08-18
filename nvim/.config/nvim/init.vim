@@ -408,6 +408,9 @@ tnoremap <silent> <A-d> <C-\><C-n>:Lspsaga close_floaterm<CR>
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 
+" insert uuid
+nnoremap <silent><leader>iu "=system('python3 -c "import uuid; print(uuid.uuid4(), end=\"\");"')<CR>p
+
 " let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 highlight Normal ctermbg=0
