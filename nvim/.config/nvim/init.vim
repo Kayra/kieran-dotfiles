@@ -414,3 +414,10 @@ nnoremap <silent><leader>iu "=system('python3 -c "import uuid; print(uuid.uuid4(
 " let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 highlight Normal ctermbg=0
+
+" search for selected text
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" formatting
+nnoremap <silent> ff <cmd>lua vim.lsp.buf.formatting()<CR>
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting()
