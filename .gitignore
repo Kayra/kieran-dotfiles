@@ -1,5 +1,5 @@
 *.swp
 *.un~
 vimwiki/snippets/work
-nvim/.config/nvim
+nvim/.config/nvim/lua/plugins/local.lua
 

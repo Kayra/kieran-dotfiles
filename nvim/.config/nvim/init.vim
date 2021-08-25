@@ -1,6 +1,5 @@
 scriptencoding utf-8
 
-
 " Nice menu when typing `:find *.py`
 set wildmode=longest,list,full
 set wildmenu
@@ -48,8 +47,10 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'ncm2/float-preview'
+Plug 'ray-x/lsp_signature.nvim'
 Plug 'rafamadriz/friendly-snippets'
-Plug 'janko/vim-test'
+Plug 'vim-test/vim-test'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'
@@ -373,6 +374,7 @@ call s:project(
         \ )
 
 luafile ~/.config/nvim/lua/plugins/complete.lua
+luafile ~/.config/nvim/lua/plugins/local.lua
 
 " LSP config (the mappings used in the default file don't quite work right)
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
@@ -388,9 +390,10 @@ nnoremap <silent> gR :Lspsaga rename<CR>
 nnoremap <silent>K :Lspsaga hover_doc<CR>
 nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 " auto-format
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)
+autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 1000)
+autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 1000)
+autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 1000)
 
 " code actions activate the popup for suggestions
 nnoremap <silent><leader>ca :Lspsaga code_action<CR>
@@ -421,3 +424,15 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " formatting
 nnoremap <silent> ff <cmd>lua vim.lsp.buf.formatting()<CR>
 autocmd BufWritePre *.js lua vim.lsp.buf.formatting()
+
+" save global marks
+set viminfo='100,<50,s10,h
+
+" dispatch tests
+let test#strategy = "dispatch"
+
+" all marks are global
+noremap <silent> <expr> ' "'".toupper(nr2char(getchar()))
+noremap <silent> <expr> m "m".toupper(nr2char(getchar()))
+sunmap '
+sunmap m

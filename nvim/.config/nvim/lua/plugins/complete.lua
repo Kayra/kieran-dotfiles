@@ -12,6 +12,7 @@ local eslint = {
 
 lspconfig.tsserver.setup {
   on_attach = function(client)
+    require "lsp_signature".on_attach()
     if client.config.flags then
       client.config.flags.allow_incremental_sync = true
     end
@@ -83,6 +84,8 @@ require'compe'.setup {
     treesitter = true;
   };
 }
+
+
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
