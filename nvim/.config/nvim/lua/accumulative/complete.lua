@@ -1,18 +1,19 @@
 
 local lspconfig = require"lspconfig"
+require'lspconfig'.eslint.setup{}
 
-local eslint = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  lintIgnoreExitCode = true,
-  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-  formatStdin = true
+local prettier = {
+  formatCommand = 'prettierd "${INPUT}"',
+  formatStdin = true,
 }
 
 lspconfig.tsserver.setup {
   on_attach = function(client)
-    require "lsp_signature".on_attach()
+    require "lsp_signature".on_attach({
+        floating_window = false,
+        fix_pos = true,
+        trigger_on_newline = true
+      })
     if client.config.flags then
       client.config.flags.allow_incremental_sync = true
     end
@@ -30,21 +31,21 @@ lspconfig.efm.setup {
   end,
   settings = {
     languages = {
-      javascript = {eslint},
-      javascriptreact = {eslint},
-      ["javascript.jsx"] = {eslint},
-      typescript = {eslint},
-      ["typescript.tsx"] = {eslint},
-      typescriptreact = {eslint}
+      --javascript = {eslint, prettier},
+      --javascriptreact = {eslint},
+      --["javascript.jsx"] = {eslint},
+      --typescript = {eslint, prettier},
+      --["typescript.tsx"] = {eslint},
+      --typescriptreact = {eslint}
     }
   },
   filetypes = {
     "javascript",
-    "javascriptreact",
-    "javascript.jsx",
+    --"javascriptreact",
+    --"javascript.jsx",
     "typescript",
-    "typescript.tsx",
-    "typescriptreact"
+    --"typescript.tsx",
+    --"typescriptreact"
   },
 }
 

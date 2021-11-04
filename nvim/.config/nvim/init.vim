@@ -38,25 +38,21 @@ endif
 
 " Plugins ----------------------------------------- 
 call plug#begin('~/.config/nvim/plugged')
+"Plug 'glepnir/lspsaga.nvim'
 Plug 'ambv/black'
 Plug 'dbeniamine/cheat.sh-vim'
-"Plug 'glepnir/lspsaga.nvim'
-Plug 'jasonrhansen/lspsaga.nvim', {'branch': 'finder-preview-fixes'}
 Plug 'godlygeek/tabular'
 Plug 'gruvbox-community/gruvbox'
 Plug 'hrsh7th/nvim-compe'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'ncm2/float-preview'
-Plug 'ray-x/lsp_signature.nvim'
-Plug 'rafamadriz/friendly-snippets'
-Plug 'vim-test/vim-test'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'jasonrhansen/lspsaga.nvim', {'branch': 'finder-preview-fixes'}
 Plug 'junegunn/gv.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mbbill/undotree'
+Plug 'ncm2/float-preview'
 Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
@@ -64,24 +60,28 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'puremourning/vimspector'
-Plug 'sbdchd/neoformat'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'ray-x/lsp_signature.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'szw/vim-maximizer'
 Plug 'takac/vim-hardtime'
 Plug 'theprimeagen/vim-be-good'
+Plug 'theprimeagen/harpoon'
+Plug 'theprimeagen/git-worktree.nvim'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'unblevable/quick-scope'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-test/vim-test'
 Plug 'vim-utils/vim-man'
 Plug 'vimwiki/vimwiki'
-Plug '~/.config/nvim/plugged/BufOnly' " https://github.com/vim-scripts/BufOnly.vim/blob/master/plugin/BufOnly.vim
-Plug '~/.config/nvim/plugged/LocalVim' " local config
+Plug 'windwp/nvim-projectconfig'
 call plug#end()
 
 " Mappings ---------------------------------------- 
@@ -89,13 +89,13 @@ nmap <F1> :NERDTreeToggle<CR>
 nmap <F2> :colorscheme random<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :source $MYVIMRC<CR>
-nmap <C-p> :GFiles<CR>
-nmap <C-f> :Files<CR>
-nmap <C-g> :SearchProjectAndDotfiles<CR>
+"nmap <C-p> :GFiles<CR>
+"nmap <C-f> :Files<CR>
+"nmap <C-g> :SearchProjectAndDotfiles<CR>
 nmap <leader>v :tabedit $MYVIMRC<CR>
 nmap <leader>b :BufOnly<CR>:A<CR>
 nmap <leader><Space> :bn<CR>
-nmap gb :Buffers<CR>
+"nmap gb :Buffers<CR>
 inoremap jj <ESC>
 inoremap jk <esc>
 inoremap kj <esc>
@@ -131,13 +131,6 @@ set nocompatible
 " Vim hardtime
 let g:hardtime_default_on = 0
 
-" FZF
-" hide fzf status line
-autocmd! FileType fzf set laststatus=0 noshowmode noruler
-      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-command! -bang SearchProjectAndDotfiles call fzf#run(fzf#wrap({ 'source': 'git ls-files ; git --git-dir="$HOME/.dotfiles/.git" ls-files | xargs -I {} sh -c "echo $HOME/.dotfiles/{};"', 'sink': 'e'}, <bang>0))
-
-
 " Settings
 let g:list_of_normal_keys   = ["h", "j", "k", "l", "-", "+"]
 let g:list_of_visual_keys   = ["h", "j", "k", "l", "-", "+"]
@@ -166,6 +159,7 @@ endif
 
 set diffopt+=foldcolumn:0             " don't show fold column in diff view
 
+set ignorecase
 set noemoji                           " don't assume all emoji are double width
 set expandtab                         " always use spaces instead of tabs
 
@@ -373,8 +367,13 @@ call s:project(
         \ ['*.cpp', { 'alternate': ['{}.h'], 'type': 'source' }]
         \ )
 
-luafile ~/.config/nvim/lua/plugins/complete.lua
-luafile ~/.config/nvim/lua/plugins/local.lua
+luafile ~/.config/nvim/lua/accumulative/complete.lua
+luafile ~/.config/nvim/lua/accumulative/harpoon.lua
+luafile ~/.config/nvim/lua/accumulative/local.lua
+lua require('nvim-projectconfig').load_project_config()
+
+nnoremap <silent> gc <cmd>lua require("nvim-projectconfig").edit_project_config()<CR>
+
 
 " LSP config (the mappings used in the default file don't quite work right)
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
@@ -388,16 +387,19 @@ nnoremap <silent> gR :Lspsaga rename<CR>
 "nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR> same as lspsaga
 "hover_doc
 nnoremap <silent>K :Lspsaga hover_doc<CR>
-nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 " auto-format
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 1000)
-autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 1000)
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 1000)
-autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 1000)
+"autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.js EslintFixAll
+autocmd BufWritePre *.ts EslintFixAll
 
 " code actions activate the popup for suggestions
-nnoremap <silent><leader>ca :Lspsaga code_action<CR>
-vnoremap <silent><leader>ca :<C-U>Lspsaga range_code_action<CR>
+"nnoremap <silent><C-a> :Lspsaga code_action<CR>
+"vnoremap <silent><C-a> :<C-U>Lspsaga range_code_action<CR>
+nnoremap <silent><C-a> :lua vim.lsp.buf.code_action()<CR>
 
 "nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 "nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
@@ -413,6 +415,23 @@ inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 
 " insert uuid
 nnoremap <silent><leader>iu "=system('python3 -c "import uuid; print(uuid.uuid4(), end=\"\");"')<CR>p
+
+" insert console.log for variable under cursor
+nnoremap <silent><Leader>L :put! =printf('console.log(''%s:'',  %s);', expand('<cword>'), expand('<cword>'))<CR>
+
+" harpoon
+nnoremap <leader>a :lua require("harpoon.mark").add_file()<CR>
+nnoremap <C-e> :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <leader>tc :lua require("harpoon.cmd-ui").toggle_quick_menu()<CR>
+
+nnoremap <C-h> :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <C-j> :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <C-k> :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <C-l> :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <leader>tu :lua require("harpoon.term").gotoTerminal(1)<CR>
+nnoremap <leader>te :lua require("harpoon.term").gotoTerminal(2)<CR>
+nnoremap <leader>cu :lua require("harpoon.term").sendCommand(1, 1)<CR>
+nnoremap <leader>ce :lua require("harpoon.term").sendCommand(1, 2)<CR>
 
 " let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox

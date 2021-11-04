@@ -1,1 +1,0 @@
-/home/kieran/git/scripts/configuration/config/nvim/localconfig/init1.vim
