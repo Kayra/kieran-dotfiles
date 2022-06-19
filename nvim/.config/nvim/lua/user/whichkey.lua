@@ -77,6 +77,14 @@ local opts = {
   noremap = true, -- use `noremap` when creating keymaps
   nowait = true, -- use `nowait` when creating keymaps
 }
+local v_opts = {
+  mode = "v", -- NORMAL mode
+  prefix = "<leader>",
+  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true, -- use `silent` when creating keymaps
+  noremap = true, -- use `noremap` when creating keymaps
+  nowait = true, -- use `nowait` when creating keymaps
+}
 
 local mappings = {
   ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
@@ -195,9 +203,26 @@ local mappings = {
 
   r = {
     name = "Refactoring",
-    r = { ":lua vim.lsp.buf.rename()<CR>", "Rename" },
+    n = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+  },
+
+  d = {
+    name = "Debugging",
+    c = { '<cmd>lua require"dap".continue()<CR>', "Continue" },
+    s = { '<cmd>lua require"dap".step_over()<CR>', "Step over" },
+    i = { '<cmd>lua require"dap".step_into()<CR>', "Step into" },
+    o = { '<cmd>lua require"dap".step_out()<CR>', "Step out" },
+    p = { '<cmd>lua require"dap".toggle_breakpoint()<CR>', "Breakpoint" },
   }
+
 }
 
+local v_mappings = {
+  r = {
+    name = "Refactoring",
+    f = { "<cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Search refactors" },
+  }
+}
 which_key.setup(setup)
 which_key.register(mappings, opts)
+which_key.register(v_mappings, v_opts)
