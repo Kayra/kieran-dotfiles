@@ -58,7 +58,6 @@ return packer.startup(function(use)
   use "goolord/alpha-nvim"
   use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
   use "folke/which-key.nvim"
-  use "ThePrimeagen/refactoring.nvim"
   -- Colorschemes
   -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
   use "lunarvim/darkplus.nvim"
@@ -116,6 +115,10 @@ return packer.startup(function(use)
   use "EdenEast/nightfox.nvim"
   use "rebelot/kanagawa.nvim"
   use 'tomasiser/vim-code-dark'
+  use "ThePrimeagen/refactoring.nvim"
+  use 'mfussenegger/nvim-dap'
+  use 'theHamsta/nvim-dap-virtual-text'
+  use "rcarriga/nvim-dap-ui"
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
