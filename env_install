@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 pushd $DOTFILES
-export STOW_FOLDERS="nvim,zsh,tmux,tmuxinator"
+export STOW_FOLDERS="nvim,zsh,tmux"
 
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
 do
