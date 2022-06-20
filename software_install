@@ -5,6 +5,11 @@ brew install zsh curl stow nodejs ag
 export DOTFILES=~/.dotfiles
 git clone https://github.com/Accumulative/dotfiles $DOTFILES
 
+npm install -g prettier
+npm install -g eslint@7.32.0
+npm install -g @fsouza/prettierd
+npm install -g eslint_d
+
 # zsh related installations
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
@@ -12,7 +17,3 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 source ~/.zshrc
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
-mkdir -p ~/.nvim/tmp/swap
-mkdir -p ~/.nvim/tmp/undo
-mkdir -p ~/.nvim/tmp/backup
