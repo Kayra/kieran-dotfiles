@@ -3,4 +3,5 @@
 vimwiki/snippets/work
 nvim/.config/nvim/lua/accumulative/local.lua
 nvim/.config/nvim/plugged
+nvim/.config/nvim/projects
 

@@ -21,7 +21,6 @@ null_ls.setup({
     null_ls.builtins.code_actions.eslint_d,
     -- null_ls.builtins.diagnostics.pyright,
     null_ls.builtins.diagnostics.eslint_d,
-    null_ls.builtins.diagnostics.prettierd,
     null_ls.builtins.formatting.eslint_d,
     -- null_ls.builtins.diagnostics.markdownlint,
     -- null_ls.builtins.formatting.shfmt,
