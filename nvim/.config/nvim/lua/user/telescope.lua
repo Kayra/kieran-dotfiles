@@ -11,7 +11,8 @@ telescope.setup {
     color_devicons = true,
     prompt_prefix = " ",
     selection_caret = " ",
-    path_display = { "truncate" },
+    -- prefer truncate, but git worktrees weren't working with that
+    path_display = { shorten = { len = 1, exclude = { 1, -1 } } },
 
     mappings = {
       i = {
