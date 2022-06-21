@@ -100,6 +100,7 @@ local mappings = {
     c = { "<cmd>Bdelete!<CR>", "Close Buffer" },
     l = { "<cmd>lua require 'telescope.builtin'.grep_string()<cr>", "Grep string" },
     f = { "<cmd>lua require 'user/telescope'.search_dotfiles()<cr>", "Dotfiles" },
+    p = { "<cmd>lua require 'nvim-projectconfig'.edit_project_config()<CR>", "Edit project config" },
   },
   ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
   ["f"] = {

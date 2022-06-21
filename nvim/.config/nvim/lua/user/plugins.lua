@@ -98,7 +98,7 @@ return packer.startup(function(use)
   use "tpope/vim-rhubarb" -- :GBrowse
   use "tpope/vim-repeat" -- make . stronger
   use "tpope/vim-abolish" -- better searching
-  use "tpope/vim-projectionist" -- make . stronger
+  use "tpope/vim-projectionist" -- alternate files
   use "godlygeek/tabular" -- helps align stuff
   use "mbbill/undotree"
   use "vim-test/vim-test"
