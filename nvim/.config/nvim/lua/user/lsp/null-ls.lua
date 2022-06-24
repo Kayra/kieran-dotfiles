@@ -10,6 +10,8 @@ null_ls.setup({
   debug = true,
   sources = {
     null_ls.builtins.formatting.prettierd.with({
+      filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "css", "scss", "less",
+        "html", "json", "jsonc", "yaml", "markdown", "graphql", "handlebars" },
       env = {
         PRETTIERD_LOCAL_PRETTIER_ONLY = 1,
       },
