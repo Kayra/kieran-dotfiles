@@ -62,6 +62,7 @@ return packer.startup(function(use)
   -- Colorschemes
   -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
   use "lunarvim/darkplus.nvim"
+  use "RRethy/nvim-base16"
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin
@@ -93,6 +94,8 @@ return packer.startup(function(use)
 
   -- Git
   use "lewis6991/gitsigns.nvim"
+  use "theprimeagen/git-worktree.nvim"
+
   use "tpope/vim-fugitive" -- git utils
   use "tpope/vim-dispatch" -- dispatch commands
   use "tpope/vim-surround" -- surround {}
@@ -105,7 +108,6 @@ return packer.startup(function(use)
   use "vim-test/vim-test"
   use "wellle/context.vim"
   use "windwp/nvim-projectconfig"
-  use "theprimeagen/git-worktree.nvim"
   use "simrat39/symbols-outline.nvim"
   use "unblevable/quick-scope"
   use "ray-x/lsp_signature.nvim"

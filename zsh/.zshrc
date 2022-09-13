@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="eastwood"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -74,6 +74,7 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
+  z
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -126,7 +127,11 @@ alias oldvim="vim"
 # git alias
 alias gl="git log --pretty=oneline"
 alias his="history 1000 | grep"
-alias barrier="flatpak run com.github.debauchee.barrier"
+
+alias dkillall="docker ps -aq | xargs docker stop"
+alias psource="source venv/bin/activate"
+alias penv="python3 -m venv venv"
+alias commit="$HOME/bin/commit.sh"
 
 #
 # Correction
@@ -204,8 +209,3 @@ function to_csv() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if [ -f ~/.zshrc.local ]; then
-    source ~/.zshrc.local
-else
-    print "404: ~/.zshrc.local not found."
-fi

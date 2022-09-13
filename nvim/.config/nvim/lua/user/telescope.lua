@@ -12,7 +12,7 @@ telescope.setup {
     prompt_prefix = " ",
     selection_caret = " ",
     -- prefer truncate, but git worktrees weren't working with that
-    path_display = { shorten = { len = 1, exclude = { 1, -1 } } },
+    path_display = {},
 
     mappings = {
       i = {

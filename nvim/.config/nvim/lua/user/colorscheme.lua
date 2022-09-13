@@ -1,4 +1,3 @@
 vim.cmd [[
-  set background=dark
-  colorscheme gruvbox-baby
+  colorscheme base16-ocean
 ]]

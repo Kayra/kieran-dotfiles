@@ -5,15 +5,18 @@ end
 
 local dashboard = require("alpha.themes.dashboard")
 dashboard.section.header.val = {
-  [[ ██ ▄█▀ ██░░  ████  ██▀███   ▄▄▄       ███▄    █  ]],
-  [[  ██▄█▒ ▓██░▒▓█   ▀ ██ ▒██  ▒████▄     ██ ▀█   █ ]],
-  [[ ▓███▄░ ▒██░▒▒███   ██ ░▄█ ▒▒██  ▀█▄  ▓██  ▀█ ██▒]],
-  [[ ▓██ █▄ ░██░▒▓█  ▄ ▒██▀▀█▄  ░██▄▄▄▄██ ▓██▒  ▐▌██▒]],
-  [[ ▒██▒ █▄░██░░▒████▒░██▓ ▒██▒ ▓█   ▓██▒▒██░   ▓██░]],
-  [[ ▒ ▒▒ ▓▒░▓  ░░ ▒░ ░░ ▒▓ ░▒▓░ ▒▒   ▓▒█░░ ▒░   ▒ ▒ ]],
-  [[ ░ ░▒ ▒░ ▒ ░ ░ ░  ░  ░▒ ░ ▒░  ▒   ▒▒ ░░ ░░   ░ ▒░]],
-  [[ ░ ░░ ░  ▒ ░   ░     ░░   ░   ░   ▒      ░   ░ ░ ]],
-  [[ ░  ░    ░     ░  ░   ░           ░  ░         ░ ]],
+  [[                                         ]],
+  [[                                         ]],
+  [[                                         ]],
+  [[                                         ]],
+  [[                                  .-.    ]],
+  [[     (___________________________()6 `-, ]],
+  [[     (   ______________________   /''"`  ]],
+  [[     //\\                      //\\      ]],
+  [[     "" ""                     "" ""     ]],
+  [[                                         ]],
+  [[                                         ]],
+  [[                                         ]],
 }
 dashboard.section.buttons.val = {
   dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
@@ -31,7 +34,7 @@ local function footer()
   -- local fortune = handle:read("*a")
   -- handle:close()
   -- return fortune
-  return "Kieran Burke"
+  return "Komugi"
 end
 
 dashboard.section.footer.val = footer()
